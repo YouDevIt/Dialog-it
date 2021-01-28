@@ -85,9 +85,10 @@
 (edible *)
 (* is #on #tavolo)
 
-#mango
-(name *) mango
-(descr *) Un mango gustoso.
+#pera
+(name *) pera
+(female *)
+(descr *) Una pera gustosa.
 (item *)
 (edible *)
 (* is #on #tavolo)
