@@ -1,0 +1,116 @@
+
+(story title) Un'Opera di Narrativa Interattiva
+(story noun) Un'opera di narrativa interattiva
+(story author) Anonimo
+(story blurb) Un prova della libreria standard in italiano
+(story ifid) 078F9E68-9F34-41AB-BEB8-CCE7361CD718
+(story release 1)
+
+(library links enabled)
+(default actions enabled)
+
+%% il protagonista
+
+#player
+(current player *)
+(* is #in #cucina)
+
+%% le stanze
+
+#salotto
+(room *)
+(name *) Salotto
+(look *)
+	Un elegante salotto. (line)
+	Da qui puoi andare a (#east) e a (#west).
+(from * go #east to #cucina)
+(from * go #west through #porta to #camera)
+
+#cucina
+(room *)
+(name *) Cucina
+(female *)
+(look *)
+	Una pratica cucina. (line)
+	Da qui puoi andare a (#west).
+(from * go #west to #salotto)
+
+#camera
+(room *)
+(name *) Camera
+(female *)
+(look *)
+	Una ripostante camera da letto. (line)
+	Da qui puoi andare a (#east).
+(from * go #east through #porta to #salotto)
+
+%% le porte
+
+#porta
+(door *)
+(openable *)
+(name *) porta rossa
+(female *)
+(descr *) Un'ordinaria porta rossa.
+
+%% gli oggetti
+
+#tavolo
+(name *) tavolo
+(descr *) Un robusto tavolo.
+(supporter *)
+(on-seat *)
+(* is #in #cucina)
+(appearance *)
+	Qui vedi un (#tavolo).
+    (collect $oggetto)
+		*($oggetto is #on #tavolo)
+	(into $lista_oggetti)
+	(nonempty $lista_oggetti)
+	Sul tavolo vedi (a $lista_oggetti).
+
+#poltrona
+(name *) poltrona
+(female *)
+(descr *) Una comoda poltrona.
+(on-seat *)
+(* is #in #salotto)
+(appearance *) Nel mezzo della stanza troneggia una (#poltrona).
+
+#mela
+(name *) mela
+(female *)
+(descr *) Una mela appetitosa.
+(item *)
+(edible *)
+(* is #on #tavolo)
+
+#mango
+(name *) mango
+(descr *) Un mango gustoso.
+(item *)
+(edible *)
+(* is #on #tavolo)
+
+#sciarpa
+(name *) sciarpa
+(female *)
+(descr *) Una calda sciarpa.
+(item *)
+(wearable *)
+(* is #on #tavolo)
+
+#scatola
+(name *) scatola
+(female *)
+(descr *) Una capiente scatola.
+(item *)
+(container *)
+(* is #on #tavolo)
+
+#letto
+(name *) letto
+(descr *) Un comodo letto.
+(on-seat *)
+(* is #in #camera)
+(appearance *) Un (#letto) occupa gran parte della stanza.
