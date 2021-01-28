@@ -65,9 +65,9 @@
 			(endif)
 		(else)
 			(if) ($case = 0) (then)
-				un
+				uno
 			(else)
-				uno 
+				un 
 			(endif)
 		(endif)
 	(endif)
