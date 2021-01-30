@@ -1,6 +1,6 @@
 
 (library version)
-	Library version 0.46 IT 0.01. %%*&& Library version 0.46.
+	Library version 0.46 IT 0.02. %%*&& Library version 0.46.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Italian Language specific code
@@ -12,33 +12,23 @@
 (interface (art-det $<Obj))
 (art-det $Obj)
 	(art-case $Obj $case)
-	(if) (plural $Obj) (then)
-		(if) (female $Obj) (then)
+	{ (plural $Obj)
+		{ (female $Obj) 
 			le
-		(else)
-			(if) ($case = 2) (then)
-				i 
-			(else)
-				gli 
-			(endif)
-		(endif)
-	(else)
-		(if) (female $Obj) (then)
-			(if) ($case = 0) (then)
+		(or)
+			{ ($case = 2) i (or) gli }
+		}
+	(or)
+		{ (female $Obj)
+			{ ($case = 0) l' (no space) (or) la }
+		(or)
+			{ ($case = 0)
 				l' (no space)
-			(else)
-				la 
-			(endif)
-		(else)
-			(if) ($case = 0) (then)
-				l' (no space)
-			(elseif) ($case = 1) (then)
-				lo
-			(else)
-				il 
-			(endif)
-		(endif)
-	(endif)
+			(or)
+				{ ($case = 1) lo (or) il }
+			}
+		}
+	}
 	(name $Obj)
 
 (a $Obj)		(art-ind $Obj)
@@ -46,31 +36,19 @@
 (interface (art-ind $<Obj))
 (art-ind $Obj)
 	(art-case $Obj $case)
-	(if) (plural $Obj) (then)
-		(if) (female $Obj) (then)
+	{ (plural $Obj)
+		{ (female $Obj)
 			delle
-		(else)
-			(if) ($case = 2) (then)
-				dei 
-			(else)
-				degli 
-			(endif)
-		(endif)
-	(else)
-		(if) (female $Obj) (then)
-			(if) ($case = 0) (then)
-				un' (no space)
-			(else)
-				una 
-			(endif)
-		(else)
-			(if) ($case = 0) (then)
-				uno
-			(else)
-				un 
-			(endif)
-		(endif)
-	(endif)
+		(or)
+			{ ($case = 2) dei (or) degli }
+		}
+	(or)
+		{ (female $Obj) 
+			{ ($case = 0) un' (no space) (or) una }
+		(or)
+			{ ($case = 0) uno (or) un }
+		}
+	}
 	(name $Obj)
 
 %% preposizioni
@@ -78,33 +56,23 @@
 (interface (prep $<Obj))
 (prep $Obj)
 	(art-case $Obj $case)
-	(if) (plural $Obj) (then)
-		(if) (female $Obj) (then)
+	{ (plural $Obj) 
+		{ (female $Obj) 
 			lle
-		(else)
-			(if) ($case = 2) (then)
-				i 
-			(else)
-				gli 
-			(endif)
-		(endif)
-	(else)
-		(if) (female $Obj) (then)
-			(if) ($case = 0) (then)
+		(or)
+			{ ($case = 2) i (or) gli }
+		}
+	(or)
+		{ (female $Obj)
+			{ ($case = 0) ll' (no space) (or) lla }
+		(or)
+			{ ($case = 0) 
 				ll' (no space)
-			(else)
-				lla 
-			(endif)
-		(else)
-			(if) ($case = 0) (then)
-				ll' (no space)
-			(elseif) ($case = 1) (then)
-				llo
-			(else)
-				l 
-			(endif)
-		(endif)
-	(endif)
+			(or)
+				{($case = 1) llo (or) l }
+			}
+		}
+	}
 	(name $Obj)
 
 (prep []) (space) qualcosa che non c'è
@@ -126,13 +94,14 @@
 
 (interface (prep $<Rel $<Obj))
 (prep $Rel $Dest)
-	(if) ($Rel = #in) (then)
+	{
+	($Rel = #in)
 		(prep-in $Dest)
-	(elseif) ($Rel = #on) (then)
+	(or) ($Rel = #on)
 		(prep-su $Dest)
-	(else)
+	(or)
 		??? (the $Dest)
-	(endif)
+	}
 
 %% supporto articoli e preposizioni
 
@@ -176,9 +145,9 @@
 
 %% modifiche verbi inglesi
 
-(has $Obj)	(if) (plural $Obj) (then) hanno (else) ha (endif)
+(has $Obj)	{ (plural $Obj) hanno (or) ha }
 
-(is $Obj)	(if) (plural $Obj) (then) sono (else) è (endif)
+(is $Obj)	{ (plural $Obj) sono (or) è }
 
 (does $)
 
@@ -186,7 +155,7 @@
 
 (isn't $Obj)	non (is $Obj)
 
-(the $Obj is)	(if)(current player $Obj)(then)Sei(else)(the $Obj) (is $Obj)(endif)
+(the $Obj is)	{ (current player $Obj) Sei (or) (the $Obj) (is $Obj) }
 
 (itself $Obj)	se stess (oaie $Obj)
 
@@ -195,30 +164,22 @@
 (oaie $Obj)
 	(no space)
 	(if) (plural $Obj) (then)
-		(if) (female $Obj) (then)
-			e
-		(else)
-			i
-		(endif)
+		{ (female $Obj) e (or) i }
 	(else)
-		(if) (female $Obj) (then)
-			a
-		(else)
-			o
-		(endif)
+		{ (female $Obj) a (or) o }
 	(endif)
 
-(c'è $Obj)	(if) (plural $Obj) (then) ci sono (else) c'è (endif)
+(c'è $Obj)	{ (plural $Obj) ci sono (or) c'è }
 
-(sta $Obj)	sta (if) (plural $Obj) (then) (no space) nno (endif)
+(sta $Obj)	sta { (plural $Obj) (no space) nno (or) }
 
-(può $Obj)	(if) (plural $Obj) (then) possono (else) può (endif)
+(può $Obj)	{ (plural $Obj) possono (or) }
 
-(toglie $Obj)	(if) (plural $Obj) (then) tolgono (else) toglie (endif)
+(toglie $Obj)	{ (plural $Obj) tolgono (or) toglie }
 
-(are-3-pres $Obj)	(no space) (if) (plural $Obj) (then) ano (else) a (endif)
-(ere-3-pres $Obj)	(no space) (if) (plural $Obj) (then) ono (else) e (endif)
-%% (ire-3-pres $Obj)	(no space) (if) (plural $Obj) (then) ono (else) e (endif)
+(are-3-pres $Obj)	(no space) { (plural $Obj) ano (or) a }
+(ere-3-pres $Obj)	(no space) { (plural $Obj) ono (or) e }
+%% (ire-3-pres $Obj)	(no space) { (plural $Obj) ono (or) e }
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

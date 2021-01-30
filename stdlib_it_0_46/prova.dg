@@ -1,13 +1,36 @@
 
-(story title) Un'Opera di Narrativa Interattiva
-(story noun) Un'opera di narrativa interattiva
-(story author) Anonimo
+(story title) Un'avventura per Dialog
+(story noun) Una storia pretestuosa
+(story author) Leonardo Boselli
 (story blurb) Un prova della libreria standard in italiano
 (story ifid) 078F9E68-9F34-41AB-BEB8-CCE7361CD718
-(story release 1)
+(story release 2)
 
 (library links enabled)
 (default actions enabled)
+
+%% Inventario migliore
+
+(perform [inventory])
+    (current player $Player)
+    (if) ($ is #heldby $Player) (then)
+        Hai: (line)
+        (list objects #heldby $Player indented 4)
+    (else)
+        Non hai nulla.
+    (endif)
+    (if) ($ is #wornby $Player) (then)
+		Indossi: (line)
+		(list objects #wornby $Player indented 4)
+	(endif)
+
+(list objects $Rel $Loc indented $I)
+    ($I plus 4 into $NextI)
+    (exhaust) {
+        *($Obj is $Rel $Loc)
+        (space $I) (a $Obj) (line)
+        (list objects $ $Obj indented $NextI)
+    }
 
 %% il protagonista
 
@@ -81,6 +104,13 @@
 (name *) mela
 (female *)
 (descr *) Una mela appetitosa.
+(item *)
+(edible *)
+(* is #on #tavolo)
+
+#mango
+(name *) mango
+(descr *) Un mango appetitoso.
 (item *)
 (edible *)
 (* is #on #tavolo)
