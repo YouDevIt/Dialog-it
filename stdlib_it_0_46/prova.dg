@@ -137,6 +137,7 @@
 (descr *) Una capiente scatola.
 (item *)
 (container *)
+(openable *)
 (* is #on #tavolo)
 
 #letto
@@ -145,3 +146,31 @@
 (on-seat *)
 (* is #in #camera)
 (appearance *) Un (#letto) occupa gran parte della stanza.
+
+#teca 
+(name *) teca
+(female *)
+(descr *) Una teca trasparente.
+(item *)
+(container *)
+(openable *)
+~(opaque *)
+(* is #on #tavolo)
+
+#moneta
+(name *) moneta
+(female *)
+(descr *) Una moneta d'oro.
+(item *)
+(* is #in #teca)
+(* is handled)
+
+#giacca
+(name *) giacca
+(female *)
+(descr *) Una elegante giacca.
+(item *)
+(container *)
+(wearable *)
+(* is #wornby #player)
+(* is handled)
