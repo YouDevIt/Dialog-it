@@ -1,9 +1,11 @@
 # Dialog-it
 Italian translation of the standard library of the Dialog language.
 
-Current version: 0.02 / 30th of January 2021
+Current version: 0.03 / 14th of March 2021
 
 *It's an early release that needs a lot of improvements.*
+
+*More advanced versions will be available in this repository:* https://github.com/YouDevIt/Dialogo
 
 ## About Dialog
 **Dialog** is a domain-specific language for creating works of *interactive fiction* created by Linus Åkesson.

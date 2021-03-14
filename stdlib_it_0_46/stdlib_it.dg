@@ -1,9 +1,68 @@
 
 (library version)
-	Library version 0.46 IT 0.02. %%*&& Library version 0.46.
+	Library version 0.46 IT 0.03. %%*&& Library version 0.46.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Italian Language specific code
+
+%% Comandi alternativi
+
+(perform [inventory])
+    (current player $Player)
+    (if) ($ is #heldby $Player) (then)
+        Hai: (line)
+        (list objects #heldby $Player indented 4)
+    (else)
+        Non hai nulla.
+    (endif)
+    (if) ($ is #wornby $Player) (then)
+	Indossi: (line)
+	(list objects #wornby $Player indented 4)
+    (endif)
+
+(list objects $Rel $Loc indented $I)
+    ($I plus 4 into $NextI)
+    (exhaust) {
+        *($Obj is $Rel $Loc)
+        (space $I) (a $Obj) (line)
+	{($Obj is open) (or) ~(opaque $Obj)}
+        (list objects $ $Obj indented $NextI)
+    }
+
+(perform [look])
+	(current player $Player)
+	($Player is $Rel $Loc)
+	(div @roomheader) (location headline)
+	(if) (player can see) (then)
+		(current scope ceiling $Ceil)
+		(look $Ceil)
+		(make appearances $Rel $Loc)
+		(par)
+		(perform [exits])
+	(else)
+		(narrate darkness)
+	(endif)
+
+%% rimuovere apostrofi
+
+(remove apostrophes from $Words giving $NewWords)
+	(collect words)
+		(remove apostrophes $Words)
+	(into $NewWords)
+
+(remove apostrophes $Words)
+	([$Head | $Tail] = $Words)
+	(split word $Head into $SplitWord)
+	{
+		{
+			(split $SplitWord by ['] into $Left and $Right)
+			(join words $Left into $LeftWord) $LeftWord
+			(join words $Right into $RightWord) $RightWord
+			(just)
+		}
+		(or)	$Head
+	}
+	(remove apostrophes $Tail)
 
 %% articoli
 
@@ -1784,16 +1843,15 @@
 	(then)
 		Non ci sono uscite visibili. 	%%*&& There are no obvious exits here.
 	(else)
-		Le uscite visibili sono: (line) 	%%*&& Obvious exits are: 
+		Le uscite visibili: 	%%*&& Obvious exits are:
 		(exhaust) {
 			*(from $Room go $Dir to $Target)
-			(space 4)	%%*&&
-			A (direction $Dir)
+			(direction $Dir)
 			(if) (door $Target) (or) (room $Target) (then)
 				(if) (library links enabled) (then)
 					(link) (name $Dir)
 				(else)
-					(name $Dir)
+					\* (name $Dir)	%%*&& (name $Dir)
 				(endif)
 				(if) (door $Target) (then)
 					attraverso (the $Target) 	%%*&& through 
@@ -1807,7 +1865,7 @@
 				(else)
 					(describe remote room $Target)
 				(endif)
-				. (line) 	%%*&& . 
+					%%*&& .
 			(endif)
 		}
 	(endif)
@@ -2855,7 +2913,7 @@
 %% LEAVE <obj>
 %% LEAVE
 
-(grammar [lascia/esci [single]] for [leave $]) 	%%*&& [leave/exit [single]]
+(grammar [esci [single]] for [leave $]) 	%%*&& [leave/exit [single]]
 (grammar [scendi/salta fuori [da dal dall dallo dalla dai dagli dalle] [single]] for [leave $]) 	%%*&& [get/jump/go [out off] of [single]]
 (grammar [salta fuori [single]] for [leave $]) 	%%*&& [get/jump/go off [single]]
 
@@ -3340,8 +3398,10 @@
 
 (narrate leaving $Room $Dir)
 	 	%%*&& You
-	(if) ($Dir is one of [#up #down]) (then)
+	(if) ($Dir = #up) (then)
 		Sali 	%%*&& climb
+	(elseif) ($Dir = #down) (then)
+		Scendi 	%%*&& climb
 	(elseif) (player can see) (then)
 		Vai a 	%%*&& walk
 	(else)
@@ -3429,9 +3489,9 @@
 (understand [ricomincia] as [restart])	%%*&&
 (perform [restart])
 	Ricomincio il gioco dall'inizio? \( 	%%*&& Restart the game from the beginning? \(
-	(if) (library links enabled) (then) (link) y (else) y (endif) 	%%*&& s  %% s 
+	(if) (library links enabled) (then) (link) s (else) s (endif) 	%%*&& y  %% y 
 	(no space) / (no space) 	%%*&& / 
-	(if) (library links enabled) (then) (link) n (else) n (endif) 	%%*&& n  %% n 
+	(if) (library links enabled) (then) (link) n (else) n (endif)
 	\) 	%%*&& \)
 	(if) (yesno) (then)
 		(restart)
@@ -6021,7 +6081,8 @@
 (parse commandline [undo] with choices $)
 	(try [undo])
 
-(parse commandline $Words with choices $ChoiceList)
+(parse commandline $OldWords with choices $ChoiceList)	%%*&& (parse commandline $Words with choices $ChoiceList)
+	(remove apostrophes from $OldWords giving $Words) %%*&&
 	%% Before proceeding, save the current undo state:
 	(if) (save undo 1) (then)
 		(narrate undoing $Words)
@@ -6391,7 +6452,7 @@
 
 (yesno)
 	(space) (prompt and input $Words)
-	(if) ($Words = [yes]) (or) ($Words = [y]) (then)
+	(if) ($Words = [sì]) (or) ($Words = [s]) (then)	%%*&& (if) ($Words = [yes]) (or) ($Words = [y]) (then)
 	(elseif) ($Words = [no]) (or) ($Words = [n]) (then)
 		(fail)
 	(else)
