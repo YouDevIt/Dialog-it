@@ -1,7 +1,7 @@
 # Dialog-it
 Italian translation of the standard library of the Dialog language.
 
-Current version: 0.03 / 14th of March 2021
+Current version: 0.05 / 24th of March 2021
 
 *It's an early release that needs a lot of improvements.*
 
