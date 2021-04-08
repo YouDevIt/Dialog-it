@@ -1,6 +1,6 @@
 
 (library version)
-	Library version 0.46 IT 0.05. %%*&& Library version 0.46.
+	Library version 0.46 IT 0.06. %%*&& Library version 0.46.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Italian Language specific code
@@ -17,11 +17,17 @@
 ($n spazi) (space $n)
 (interface (paragrafo))
 (paragrafo) (par)
-
+(interface (grassetto))
+(grassetto) (bold)
+(interface (italico))
+(italico) (italic)
+(interface (normale))
+(normale) (roman)
+	
 %% Comandi alternativi
 
-(after [look])
-	(perform [exits])
+%%(after [look])
+%%	(perform [exits])
 
 %% rimuovere apostrofi
 
@@ -1294,17 +1300,17 @@
 %% LISTEN TO <obj>
 %% LISTEN
 
-(grammar [ascolta/odi [single]] for [listen to $]) 	%%*&& [listen/hear [single]]
-%%*&& (grammar [listen to [single]] for [listen to $]) 	%%*&& [listen to [single]]
+(grammar [ascolta/odi [single]] for [listen $]) 	%%*&& [listen/hear [single]] for [listen to $])
+%%*&& (grammar [listen to [single]] for [listen $]) 	%%*&& [listen to [single]] for [listen to $]) 
 
-(describe action [listen to $Obj]) ascoltare (the $Obj)	%%*&&
+(describe action [listen $Obj]) ascoltare (the $Obj)	%%*&&
 
 %% Don't require reachability:
 
-(refuse [listen to $Obj])
+(refuse [listen $Obj])		%%*&& (refuse [listen to $Obj])
 	(just) (when $Obj is not here)
 
-(perform [listen to $Obj])
+(perform [listen $Obj])	%%*&&	(perform [listen to $Obj])
 	(if) (current player $Obj) (then)
 		Puoi udire il gorgoglio familiare del tuo flusso sanguigno 	%%*&& You can hear the familiar rumble of your blood stream
 		e il flebile gemito del tuo sistema nervoso. 	%%*&& and the faint whine of your nervous system.
@@ -1322,7 +1328,7 @@
 
 (instead of [listen])
 	(current room $Room)
-	(try [listen to $Room])
+	(try [listen $Room])	%%*&& (try [listen to $Room])
 
 %% KISS <obj>
 
@@ -2364,7 +2370,7 @@
 (grammar [taglia/affetta [object] con [single]] for [cut $ with $]) 	%%*&& [cut/sever/slice/prune/chop [object] with [single]]
 (grammar [taglia/affetta [object]] for [cut $]) 	%%*&& [cut/sever/slice/prune/chop [object]]
 (grammar [taglia/affetta via [object]] for [cut $]) 	%%*&& [cut/slice/chop off [object]]
-(grammar [taflia/affetta [object] off] for [cut $]) 	%%*&& [cut/slice/chop [object] off]
+(grammar [taglia/affetta [object] via] for [cut $]) 	%%*&& [cut/slice/chop [object] off]
 
 (describe action [cut $Obj with $Cutter])	tagliare (the $Obj) con (the $Cutter) 	%%*&&
 (describe action [cut $Obj])	tagliare (the $Obj) 	%%*&&
@@ -3212,7 +3218,7 @@
 
 %% TURN <obj>
 
-(grammar [gira/routa/avvita/svita [object]] for [turn $]) 	%%*&& [turn/rotate/twist/screw/unscrew [object]]
+(grammar [gira/ruota/avvita/svita [object]] for [turn $]) 	%%*&& [turn/rotate/twist/screw/unscrew [object]]
 
 (describe action [turn $Obj])	girare (the $Obj) 	%%*&&
 
@@ -3559,6 +3565,8 @@
 	(scoring enabled)
 (understand [punti/punteggio] as [score])	%%*&&
 
+(describe action [score]) vedere il punteggio	%%*&&
+
 (perform [score])
 	(scoring enabled)
 	(current score $Score)
@@ -3566,7 +3574,7 @@
 	punt (no space)(if) ($Score = 1) (then) o (else) i (endif) 	%%*&& You currently have  %% point  %% points 
 	(if) (maximum score $Max) (then)
 		su un massimo di $Max
-	(endif) 	%*%&& out of a maximum of 
+	(endif) 	%%*%&& out of a maximum of 
 	. 	%%*&& .
 
 %% NOTIFY
@@ -5235,17 +5243,17 @@
 
 (report score change)
 	(reported score is $Reported)
-	(current score $Score)******************
+	(current score $Score)
 	(if) ($Score < $Reported) (then)
 		($Reported minus $Score into $Diff)
-		\( Il tuo punteggio è diminuito di (spell out $Diff) 	%%*&& \( Your score has gone down by 
+		\( Il tuo punteggio è diminuito di $Diff 	%%*&& \( Your score has gone down by (spell out $Diff)
 		punt (if) ~(1 = $Diff) (then) (no space) i (else) (no space) o (endif) 	%%*&& point  %% s 
 		. \) 	%%*&& . \)
 		(par)
 		(now) (reported score is $Score)
 	(elseif) ($Score > $Reported) (then)
 		($Score minus $Reported into $Diff)
-		\( Il tuo punteggio è aumentato di (spell out $Diff) 	%%*&& \( Your score has gone up by 
+		\( Il tuo punteggio è aumentato di $Diff 	%%*&& \( Your score has gone up by (spell out $Diff)
 		punt (if) ~(1 = $Diff) (then) (no space) i (else) (no space) o (endif) 	%%*&& point  %% s 
 		. \) 	%%*&& . \)
 		(par)
@@ -5407,7 +5415,7 @@
 
 (game over menu)
 	(line)
-	Vorresti: 	%%*&& Would you like to:
+	Cosa vorresti fare: 	%%*&& Would you like to:
 	(if) (interpreter supports undo) (then)
 		(line) (space 5)
 		(if) (library links enabled) (then)
@@ -5437,7 +5445,7 @@
 		\(interrompere\) il programma, 	%%*&& the program,
 		(line) (space 5)
 	(endif)
-	o 	%%*&& or
+	o	%%*&& or
 	(if) (library links enabled) (then)
 		(link) RICOMINCIARE 	%%*&& RESTART
 	(else)
@@ -5460,10 +5468,10 @@
 
 (interface (parse game over $<Words))
 
-(parse game over [restart])
+(parse game over [ricominciare])	%%*&& (parse game over [restart])
 	(restart)
 
-(parse game over [restore])
+(parse game over [caricare])	%%*&& (parse game over [restore])
 	(try [restore])
 
 (parse game over [undo])
@@ -5471,7 +5479,7 @@
 		Impossibile cancellare l'ultimo turno. 	%%*&& Failed to undo last turn.
 	(endif)
 
-(parse game over [amusing])
+(parse game over [divertenti])	%%*&& (parse game over [amusing])
 	(amusing enabled)
 	(amusing)
 
